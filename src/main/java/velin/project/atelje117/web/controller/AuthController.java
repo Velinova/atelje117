@@ -1,0 +1,123 @@
+package velin.project.atelje117.web.controller;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import velin.project.atelje117.model.domain.RoleEnum;
+import velin.project.atelje117.model.domain.Role;
+import velin.project.atelje117.model.domain.User;
+import velin.project.atelje117.payload.request.LoginRequest;
+import velin.project.atelje117.payload.request.SignupRequest;
+import velin.project.atelje117.payload.response.JwtResponse;
+import velin.project.atelje117.payload.response.MessageResponse;
+import velin.project.atelje117.persistence.implementation.RoleRepository;
+import velin.project.atelje117.persistence.implementation.UserRepository;
+import velin.project.atelje117.security.jwt.JwtUtils;
+import velin.project.atelje117.security.services.UserDetailsImpl;
+
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getName(),
+                userDetails.getSurname(),
+                userDetails.getCity(),
+                roles));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        // Create new user's account
+        User user = new User(signUpRequest.getName(), signUpRequest.getSurname(), signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getCity());
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        if(strRoles == null){
+            throw new RuntimeException("Error: Role is not found1.");
+        }
+        else{
+            strRoles.forEach(role -> {
+                if (role.equals("artist")) {
+                    Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ARTIST)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found2."));
+                    roles.add(adminRole);
+                }
+                else{
+                    Role userRole = roleRepository.findByName(RoleEnum.ROLE_COWORKER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found3."));
+                    roles.add(userRole);
+
+                }
+            });
+        }
+//
+
+        user.setRoles(roles);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+}
