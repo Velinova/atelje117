@@ -7,12 +7,19 @@ import { AuthService } from '../../_services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  form: any = {};
-  isSuccessful = false;
-  isSignUpFailed = false;
-  errorMessage = '';
+  form: any;
+  isSuccessful: boolean;
+  isSignUpFailed: boolean;
+  errorMessage: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.form = {
+      role: '0'
+    };
+    this.isSuccessful = false;
+    this.isSignUpFailed = false;
+    this.errorMessage = '';
+  }
 
   ngOnInit() {
   }
@@ -20,7 +27,6 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.authService.register(this.form).subscribe(
       data => {
-        console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },

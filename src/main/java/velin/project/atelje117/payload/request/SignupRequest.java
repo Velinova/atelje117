@@ -1,6 +1,8 @@
 package velin.project.atelje117.payload.request;
 
 
+import velin.project.atelje117.model.domain.RoleEnum;
+
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +21,7 @@ public class SignupRequest {
     private String name;
     @NotBlank
     private String surname;
-    private Set<String> role;
+    private RoleEnum role;
 
     public String getUsername(){
         return username;
@@ -31,7 +33,7 @@ public class SignupRequest {
     public String getName(){return name;}
     public String getSurname(){return surname;}
     public String getCity(){return city;}
-    public Set<String> getRole(){return role;}
+    public RoleEnum getRole(){return role;}
     public void setUsername(String username){
         this.username = username;
     }
@@ -50,7 +52,7 @@ public class SignupRequest {
     public void setSurname(String surname){
         this.surname = surname;
     }
-    public void setRole(Set<String>role){
+    public void setRole(RoleEnum role){
         this.role=role;
     }
 }

@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\_components",
+    "\\app\\_components\\login",
+    "\\app\\_components\\profile",
+    "\\app\\_components\\register",
+    "\\app\\_helpers",
+    "\\app\\_services"
+  ],
+  "SelectedNode": "\\app\\_helpers\\auth.interceptor.ts",
+  "PreviewInSolutionExplorer": false
+}

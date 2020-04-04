@@ -17,13 +17,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import velin.project.atelje117.model.domain.RoleEnum;
-import velin.project.atelje117.model.domain.Role;
-import velin.project.atelje117.model.domain.User;
+import velin.project.atelje117.model.domain.*;
 import velin.project.atelje117.payload.request.LoginRequest;
 import velin.project.atelje117.payload.request.SignupRequest;
 import velin.project.atelje117.payload.response.JwtResponse;
 import velin.project.atelje117.payload.response.MessageResponse;
+import velin.project.atelje117.persistence.implementation.ArtistsRepository;
+import velin.project.atelje117.persistence.implementation.CoworkerRepository;
 import velin.project.atelje117.persistence.implementation.RoleRepository;
 import velin.project.atelje117.persistence.implementation.UserRepository;
 import velin.project.atelje117.security.jwt.JwtUtils;
@@ -35,6 +35,12 @@ import velin.project.atelje117.security.services.UserDetailsImpl;
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    ArtistsRepository artistsRepository;
+
+    @Autowired
+    CoworkerRepository coworkerRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -50,9 +56,8 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        UsernamePasswordAuthenticationToken tkn = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+        Authentication authentication = authenticationManager.authenticate(tkn);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -73,6 +78,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @Transactional
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -92,31 +98,30 @@ public class AuthController {
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getCity());
 
-        Set<String> strRoles = signUpRequest.getRole();
+        RoleEnum strRole = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-
-        if(strRoles == null){
-            throw new RuntimeException("Error: Role is not found1.");
-        }
-        else{
-            strRoles.forEach(role -> {
-                if (role.equals("artist")) {
-                    Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ARTIST)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found2."));
-                    roles.add(adminRole);
-                }
-                else{
-                    Role userRole = roleRepository.findByName(RoleEnum.ROLE_COWORKER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found3."));
-                    roles.add(userRole);
-
-                }
-            });
+        
+        if(strRole == RoleEnum.ROLE_ARTIST) {
+            Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ARTIST)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found2."));
+            roles.add(adminRole);
+        }else {
+            Role userRole = roleRepository.findByName(RoleEnum.ROLE_COWORKER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found3."));
+            roles.add(userRole);
         }
 //
-
         user.setRoles(roles);
-        userRepository.save(user);
+        User newUser = userRepository.save(user);
+
+
+        if(strRole == RoleEnum.ROLE_ARTIST) {
+            ArtistUser artist = new ArtistUser(newUser.getUsername(), newUser.getEmail(), newUser.getPassword(),newUser.getName(), newUser.getSurname(), newUser.getCity(), newUser.getId());
+            artistsRepository.save(artist);
+        }else{
+            CoworkerUser coworker = new CoworkerUser(  newUser.getUsername(), newUser.getEmail(), newUser.getPassword(),newUser.getName(), newUser.getSurname(), newUser.getCity(), newUser.getId());
+            coworkerRepository.save(coworker);
+        }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
