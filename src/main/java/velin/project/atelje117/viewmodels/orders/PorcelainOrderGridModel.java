@@ -1,6 +1,7 @@
 package velin.project.atelje117.viewmodels.orders;
 
-public class PorcelainOrdersGridModel {
+public class PorcelainOrderGridModel {
+    public int Id;
     public String CoworkerName;
     public String DueTo;
     public String ColorType;

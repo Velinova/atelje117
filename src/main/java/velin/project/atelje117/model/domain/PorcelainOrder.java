@@ -37,7 +37,12 @@ public class PorcelainOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coworkerId", nullable = false)
     private CoworkerUser coworker;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artistId", nullable = false)
+    private ArtistUser artist;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "clientId", referencedColumnName = "id", nullable = false)
     private Client client;
+    @Column(name="plateCode",  nullable = false)
+    private String plateCode;
 }

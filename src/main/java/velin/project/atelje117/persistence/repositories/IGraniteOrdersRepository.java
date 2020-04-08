@@ -10,6 +10,7 @@ public interface IGraniteOrdersRepository {
     GraniteOrder save(GraniteOrder order);
     void deleteById(int Id);
     void delete(GraniteOrder order);
-/*    List<GraniteOrder> findByCoworkerId(UUID Id);*/
+    List<GraniteOrder> findByArtistId(int Id);
+    List<GraniteOrder> findByCoworkerId(int Id);
 
 }

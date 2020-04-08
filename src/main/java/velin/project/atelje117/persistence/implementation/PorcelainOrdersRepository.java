@@ -41,8 +41,14 @@ public class PorcelainOrdersRepository implements IPorcelainOrdersRepository {
         this.repository.delete(order);
     }
 
-   /* @Override
-    public List<PorcelainOrder> findByCoworkerId(UUID Id) {
-        return this.repository.findByCoworkerId(Id);
-    }*/
+    @Override
+    public List<PorcelainOrder> findByArtistId(int Id) {
+        return this.repository.findAllByArtist(Id);
+    }
+
+    @Override
+    public List<PorcelainOrder> findByCoworkerId(int Id) {
+        return this.repository.findAllByCoworker(Id);
+    }
+
 }

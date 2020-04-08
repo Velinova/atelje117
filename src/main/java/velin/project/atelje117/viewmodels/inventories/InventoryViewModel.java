@@ -1,6 +1,6 @@
 package velin.project.atelje117.viewmodels.inventories;
 
-public class InventoryGridModel {
+public class InventoryViewModel {
     public int Id;
     public String PlateCode;
     public String PlateShape;

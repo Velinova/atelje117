@@ -70,7 +70,14 @@ public class ArtistUser {
             fetch = FetchType.LAZY, mappedBy = "artist", targetEntity = PlatesInventory.class
     )
     private Set<PlatesInventory> inventories;
-
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY, mappedBy = "id", targetEntity = GraniteOrder.class)
+    private Set<GraniteOrder> graniteOrders;
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY, mappedBy = "id", targetEntity = PorcelainOrder.class)
+    private Set<PorcelainOrder> porcelainOrders;
     private int userId;
 
     public ArtistUser(String username, String email, String password, String name, String surname, String city, int userId){

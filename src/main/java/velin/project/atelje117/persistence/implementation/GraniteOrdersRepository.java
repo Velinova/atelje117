@@ -40,8 +40,15 @@ public class GraniteOrdersRepository implements IGraniteOrdersRepository {
         this.repository.delete(order);
     }
 
-   /* @Override
-    public List<GraniteOrder> findByCoworkerId(UUID Id) {
-        return this.repository.findByCoworkerId(Id);
-    }*/
+    @Override
+    public List<GraniteOrder> findByArtistId(int Id) {
+        return this.repository.findAllByArtist(Id);
+    }
+
+    @Override
+    public List<GraniteOrder> findByCoworkerId(int Id) {
+        return this.repository.findAllByArtist(Id);
+    }
+
+
 }

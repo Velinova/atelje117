@@ -1,4 +1,12 @@
 package velin.project.atelje117.viewmodels.artists;
 
-public class ArtistColleagueGridModel {
+import java.util.List;
+
+public class ArtistGridModel {
+    public String Name;
+    public String Surname;
+    public String Email;
+    public String City;
+    public int UnpaidAmount;
+
 }

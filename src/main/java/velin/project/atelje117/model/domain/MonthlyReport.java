@@ -3,6 +3,7 @@ package velin.project.atelje117.model.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -18,6 +19,8 @@ public class MonthlyReport {
     private int id;
     @Column(name = "income",  nullable = false)
     private int income;
+    @Column(name = "month",  nullable = false)
+    private Date month;
     @Column(name = "profit",  nullable = false)
     private int profit;
     @Column(name = "unpaid",  nullable = false)

@@ -59,7 +59,7 @@ public class CoworkerUser {
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY, mappedBy = "id", targetEntity = PorcelainOrder.class)
-    private Set<GraniteOrder> porcelainOrders;
+    private Set<PorcelainOrder> porcelainOrders;
 
     private int userId;
 

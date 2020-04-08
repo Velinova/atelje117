@@ -10,8 +10,8 @@ import {UserService} from "./_services/user.service";
 export class AppComponent implements OnInit {
   private roles: string[];
   isLoggedIn = false;
-  showAdminBoard = false;
-  showModeratorBoard = false;
+  showArtistBoard = true;
+  showCoworkerBoard = true;
   username: string;
 
   constructor(private tokenStorageService: TokenStorageService,

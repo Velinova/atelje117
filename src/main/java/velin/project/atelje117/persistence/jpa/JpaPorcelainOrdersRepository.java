@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface JpaPorcelainOrdersRepository extends JpaRepository<PorcelainOrder, Integer> {
-    /*@Query("SELECT po FROM porcelain_orders po WHERE po.coworker_id = ?1")
-    List<PorcelainOrder> findByCoworkerId(UUID Id);
-*/}
+    public List<PorcelainOrder> findAllByArtist(int Id);
+    public List<PorcelainOrder> findAllByCoworker(int Id);
+}

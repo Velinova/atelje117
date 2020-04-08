@@ -6,6 +6,7 @@ import velin.project.atelje117.persistence.jpa.JpaPlateInventoriesRepository;
 import velin.project.atelje117.persistence.repositories.IPlateInventoriesRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -41,8 +42,9 @@ public class PlateInventoriesRepository implements IPlateInventoriesRepository {
         this.repository.delete(inventory);
     }
 
-    /*@Override
-    public List<PlatesInventory> findByArtistId(UUID Id) {
-        return this.findByArtistId(Id);
-    }*/
+    @Override
+    public Optional<PlatesInventory> findByPlateCodeAndArtistId(String code, int artistId) {
+        return this.findByPlateCodeAndArtistId(code, artistId);
+    }
+
 }

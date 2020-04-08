@@ -42,4 +42,9 @@ public class CoworkerRepository implements ICoworkersRepository {
         this.repository.delete(coworker);
     }
 
+    @Override
+    public int getUnpaidAmount(int ArtistId, int CoworkerId) {
+        return 0;
+    }
+
 }

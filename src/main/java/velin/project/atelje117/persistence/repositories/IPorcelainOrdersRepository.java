@@ -11,7 +11,6 @@ public interface IPorcelainOrdersRepository {
     PorcelainOrder save(PorcelainOrder order);
     void deleteById(int Id);
     void delete(PorcelainOrder order);
-/*
-    List<PorcelainOrder> findByCoworkerId(UUID Id);
-*/
+    List<PorcelainOrder> findByArtistId(int Id);
+    List<PorcelainOrder> findByCoworkerId(int Id);
 }

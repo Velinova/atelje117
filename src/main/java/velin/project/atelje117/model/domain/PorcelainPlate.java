@@ -27,8 +27,6 @@ public class PorcelainPlate {
     @Column(name = "shape",  nullable = false)
     @Enumerated(EnumType.STRING)
     private PlateShape shape;
-    @Column(name = "price",  nullable = false)
-    private int price;
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,

@@ -2,7 +2,7 @@ package velin.project.atelje117.viewmodels.artists;
 
 import java.util.UUID;
 
-public class ArtistGridModel {
+public class ArtistBasicGridModel {
     public String Name;
     public String Surname;
     public String Email;
