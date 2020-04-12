@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,4 +26,35 @@ public class PlatesInventory {
     @JoinColumn(name = "artistId", nullable = false)
     private ArtistUser artist;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public PorcelainPlate getPlate() {
+        return plate;
+    }
+
+    public void setPlate(PorcelainPlate plate) {
+        this.plate = plate;
+    }
+
+    public ArtistUser getArtist() {
+        return artist;
+    }
+
+    public void setArtist(ArtistUser artist) {
+        this.artist = artist;
+    }
 }

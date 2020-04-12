@@ -1,6 +1,8 @@
 package velin.project.atelje117.service.implementaiton;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import velin.project.atelje117.mapper.artists.ArtistMapper;
 import velin.project.atelje117.mapper.coworkers.CoworkerMapper;
 import velin.project.atelje117.mapper.inventory.InventoryMapper;
@@ -19,6 +21,7 @@ import velin.project.atelje117.viewmodels.inventories.InventoryViewModel;
 import velin.project.atelje117.viewmodels.orders.GraniteOrderGridModel;
 import velin.project.atelje117.viewmodels.orders.PorcelainOrderGridModel;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Service
@@ -59,24 +62,25 @@ public class ArtistService implements IArtistService {
         });
         return list;
     }
-
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void addCoworker(int artistId, int coworkerId) {
         ArtistUser artist = artistsRepository.getOne(artistId);
         CoworkerUser coworker  =  coworkersRepository.getOne(coworkerId);
         Collection<CoworkerUser> coworkers = artist.getCoworkers();
         coworkers.add(coworker);
-        artist.setCoworkers((Set<CoworkerUser>)coworkers);
+        artist.setCoworkers((List<CoworkerUser>)coworkers);
         artistsRepository.save(artist);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteCoworker(int artistId, int coworkerId) {
         ArtistUser artist = artistsRepository.getOne(artistId);
         CoworkerUser coworker  =  coworkersRepository.getOne(coworkerId);
         Collection<CoworkerUser> coworkers = artist.getCoworkers();
         coworkers.remove(coworker);
-        artist.setCoworkers((Set<CoworkerUser>)coworkers);
+        artist.setCoworkers((List<CoworkerUser>)coworkers);
         artistsRepository.save(artist);
     }
 
@@ -103,7 +107,7 @@ public class ArtistService implements IArtistService {
             newInventory.setPlate(newPlate);
 
         }
-        Set<PlatesInventory> inventories = artist.getInventories();
+        List<PlatesInventory> inventories = artist.getInventories();
         inventories.add(newInventory);
         artist.setInventories(inventories);
         return newInventory.getId();
@@ -111,12 +115,15 @@ public class ArtistService implements IArtistService {
 
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED)
     public List<CoworkerGridModel> getCoworkers(int Id) {
         CoworkerMapper mapper = new CoworkerMapper();
         List<CoworkerGridModel> list = new ArrayList<>();
+        Collection<CoworkerUser> coworkers= artistsRepository.getOne(Id).getCoworkers();
 
-        artistsRepository.getOne(Id).getCoworkers().forEach(coworker -> {
-            list.add(mapper.MapToGridModel(coworker));
+        coworkers.forEach(coworker -> {
+            CoworkerGridModel newCoworker = mapper.MapToGridModel(coworker);
+            list.add(newCoworker);
         });
 
         return list;

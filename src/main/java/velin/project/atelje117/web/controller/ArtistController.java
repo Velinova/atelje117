@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/artist")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ArtistController {
     private IArtistService artistService;
     private IPorcelainInventoryService porcelainInventoryService;
@@ -37,18 +37,18 @@ public class ArtistController {
     }
 
     //coworkers
-    @GetMapping("/getCoworkers")
-    public List<CoworkerGridModel> getCoworkers(@RequestParam int id){
+    @GetMapping("/getCoworkers/{id}")
+    public List<CoworkerGridModel> getCoworkers(@PathVariable int id){
         return artistService.getCoworkers(id);
     }
 
-    @GetMapping("/addCoworker")
-    public void addCoworker(@RequestParam int artistId, @RequestParam int coworkerId){
+    @GetMapping("/addCoworker/{artistId}/{coworkerId}")
+    public void addCoworker(@PathVariable int artistId, @PathVariable int coworkerId){
         artistService.addCoworker(artistId, coworkerId);
     }
 
-    @GetMapping("/deleteCoworker")
-    public void deleteCoworker(@RequestParam int artistId, @RequestParam int coworkerId){
+    @GetMapping("/deleteCoworker/{artistId}/{coworkerId}")
+    public void deleteCoworker(@PathVariable int artistId, @PathVariable int coworkerId){
         artistService.deleteCoworker(artistId, coworkerId);
     }
 

@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Data
 @Table(name = "plates")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,4 +32,44 @@ public class PorcelainPlate {
             fetch = FetchType.LAZY, mappedBy = "plate"
     )
     private Set<PlatesInventory> inventories;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public boolean isFramed() {
+        return framed;
+    }
+
+    public void setFramed(boolean framed) {
+        this.framed = framed;
+    }
+
+    public PlateDimension getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(PlateDimension dimension) {
+        this.dimension = dimension;
+    }
+
+    public PlateShape getShape() {
+        return shape;
+    }
+
+    public void setShape(PlateShape shape) {
+        this.shape = shape;
+    }
+
+    public Set<PlatesInventory> getInventories() {
+        return inventories;
+    }
+
+    public void setInventories(Set<PlatesInventory> inventories) {
+        this.inventories = inventories;
+    }
 }

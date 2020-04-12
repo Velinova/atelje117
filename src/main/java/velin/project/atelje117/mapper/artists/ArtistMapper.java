@@ -16,6 +16,7 @@ public class ArtistMapper {
     }
     public ArtistGridModel MapToGridModel(ArtistUser artist){
         ArtistGridModel gridModel = new ArtistGridModel();
+        gridModel.Id = artist.getId();
         gridModel.Name = artist.getName();
         gridModel.Surname = artist.getSurname();
         gridModel.City = artist.getCity();

@@ -12,5 +12,6 @@ public interface JpaArtistRepository extends JpaRepository<ArtistUser, Integer> 
     Optional<ArtistUser> findByUsername(String username);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
+    Optional<ArtistUser> findById(int Id);
 
 }

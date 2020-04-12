@@ -6,9 +6,10 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,15 +52,15 @@ public class CoworkerUser {
     private String city;
 
     @ManyToMany(mappedBy = "coworkers", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private Set<ArtistUser> artists;
+    private List<ArtistUser> artists= new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY, mappedBy = "id", targetEntity = GraniteOrder.class)
-    private Set<GraniteOrder> graniteOrders;
+    private List<GraniteOrder> graniteOrders= new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY, mappedBy = "id", targetEntity = PorcelainOrder.class)
-    private Set<PorcelainOrder> porcelainOrders;
+    private List<PorcelainOrder> porcelainOrders= new ArrayList<>();
 
     private int userId;
 
@@ -71,5 +72,96 @@ public class CoworkerUser {
         this.setName(name);
         this.setSurname(surname);
         this.setCity(city);
+        this.setArtists(new ArrayList<>());
+        this.setGraniteOrders(new ArrayList<>());
+        this.setPorcelainOrders(new ArrayList<>());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public List<ArtistUser> getArtists() {
+        return artists;
+    }
+
+    public void setArtists(List<ArtistUser> artists) {
+        this.artists = artists;
+    }
+
+    public List<GraniteOrder> getGraniteOrders() {
+        return graniteOrders;
+    }
+
+    public void setGraniteOrders(List<GraniteOrder> graniteOrders) {
+        this.graniteOrders = graniteOrders;
+    }
+
+    public List<PorcelainOrder> getPorcelainOrders() {
+        return porcelainOrders;
+    }
+
+    public void setPorcelainOrders(List<PorcelainOrder> porcelainOrders) {
+        this.porcelainOrders = porcelainOrders;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

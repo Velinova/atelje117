@@ -3,6 +3,7 @@ package velin.project.atelje117.web.controller;
 import org.springframework.web.bind.annotation.*;
 import velin.project.atelje117.service.services.*;
 import velin.project.atelje117.viewmodels.artists.ArtistGridModel;
+import velin.project.atelje117.viewmodels.coworkers.CoworkerViewModel;
 import velin.project.atelje117.viewmodels.orders.GraniteOrderCreateModel;
 import velin.project.atelje117.viewmodels.orders.GraniteOrderGridModel;
 import velin.project.atelje117.viewmodels.orders.PorcelainOrderCreateModel;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/coworker")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CoworkerController {
     private ICoworkerService coworkerService;
     private IGraniteOrderService graniteOrderService;
@@ -22,9 +23,12 @@ public class CoworkerController {
         this.graniteOrderService = graniteOrderService;
         this.porcelainOrderService = porcelainOrderService;
     }
-
-    @GetMapping("/getColleagues")
-    public List<ArtistGridModel> getColleaguesArtists(@RequestParam int id){
+    @GetMapping("/get")
+    public List<CoworkerViewModel> getCoworkers(){
+        return coworkerService.getCoworkers();
+    }
+    @GetMapping("/getColleagues/{id}")
+    public List<ArtistGridModel> getColleaguesArtists(@PathVariable int id){
         return coworkerService.getColleaguesArtists(id);
     }
     @GetMapping("/getGraniteOrders")
@@ -42,7 +46,7 @@ public class CoworkerController {
     }
 
     @PostMapping("/createGraniteOrder")
-    public void addGraniteOrder(GraniteOrderCreateModel model){
+    public void addGraniteOrder( @RequestBody GraniteOrderCreateModel model){
         graniteOrderService.addGraniteOrder(model);
     }
     @PostMapping("/createPorcelainOrder")

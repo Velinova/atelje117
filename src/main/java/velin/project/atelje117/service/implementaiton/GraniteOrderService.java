@@ -1,6 +1,8 @@
 package velin.project.atelje117.service.implementaiton;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import velin.project.atelje117.mapper.clients.ClientMapper;
 import velin.project.atelje117.mapper.orders.GraniteOrderMapper;
 import velin.project.atelje117.model.domain.*;
@@ -52,12 +54,13 @@ public class GraniteOrderService implements IGraniteOrderService {
         return list;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void addGraniteOrder(GraniteOrderCreateModel model) {
         GraniteOrder order = new GraniteOrder();
-        ArtistUser artist = artistsRepository.getOne(model.ArtistId);
         CoworkerUser coworker = coworkersRepository.getOne(model.CoworkerId);
-        order.setArtist(artist);
+//        ArtistUser artist = artistsRepository.getOne(model.ArtistId);
+//        order.setArtist(artist);
         order.setCoworker(coworker);
         order.setStatus(OrderStatus.ORDERED);
         order.setOrderType(GraniteOrderType.valueOf(model.OrderType));

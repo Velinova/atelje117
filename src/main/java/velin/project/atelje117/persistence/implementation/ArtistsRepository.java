@@ -21,9 +21,15 @@ public class ArtistsRepository implements IArtistsRepository {
         this.repository = repository;
     }
 
+
     @Override
     public ArtistUser getOne(int Id) {
-         return this.repository.getOne((Id));
+        return this.repository.getOne(Id);
+    }
+
+    @Override
+    public Optional<ArtistUser> findById(int Id) {
+        return this.repository.findById(Id);
     }
 
     @Override
@@ -58,41 +64,7 @@ public class ArtistsRepository implements IArtistsRepository {
         ArtistUser artist = this.repository.getOne(Id);
         return artist.getInventories();
     }
-//
-//    @Override
-//    public Collection<GraniteOrder> getGraniteOrders(int Id) {
-//        ArtistUser artist = this.repository.getOne(Id);
-//        Collection<CoworkerUser> coworkers = artist.getCoworkers();
-//        List<GraniteOrder> graniteOrders = new ArrayList<>();
-//        for (CoworkerUser coworker: coworkers
-//             ) {
-//            graniteOrders.addAll(coworker.getGraniteOrders());
-//        }
-//        return graniteOrders;
-//    }
-//
-//    @Override
-//    public Collection<PorcelainOrder> getPorcelainOrders(int Id) {
-//        ArtistUser artist = this.repository.getOne(Id);
-//        Collection<CoworkerUser> coworkers = artist.getCoworkers();
-//        List<PorcelainOrder> porcelainOrders = new ArrayList<>();
-//        for (CoworkerUser coworker: coworkers
-//        ) {
-//            porcelainOrders.addAll(coworker.getPorcelainOrders());
-//        }
-//        return porcelainOrders;
-//    }
 
-
-//    @Override
-//    public int addCoworker(int Id, CoworkerUser coworker) {
-//        ArtistUser artist = this.repository.getOne(Id);
-//        Collection<CoworkerUser> coworkers = artist.getCoworkers();
-//        coworkers.add(coworker);
-//        this.repository.deleteById(Id);
-//        this.repository.save(artist);
-//        return coworker.getId();
-//    }
 
 
 }
