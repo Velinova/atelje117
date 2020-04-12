@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Dialog title</h1>
+<form #personnelForm="ngForm" (ngSubmit)="onSubmit(personnelForm)" >
+  <div mat-dialog-content>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button type="button" (click)="onNoClick()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit">Submit</button>
+  </mat-dialog-actions>
+</form>
+
+<div class="mt-2">
+  <strong>
+    Items marked with (*) are required.
+  </strong>
+</div>

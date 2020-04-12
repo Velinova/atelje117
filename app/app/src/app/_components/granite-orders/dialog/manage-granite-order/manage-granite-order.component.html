@@ -1,0 +1,194 @@
+<h1 mat-dialog-title>Add new granite order</h1>
+<form #orderForm="ngForm" (ngSubmit)="onSubmit(orderForm)" name="model">
+  {{model | json }}
+  <div mat-dialog-content>
+    <div class="row">
+      <div class="col-6" id = "order-info">
+        <h6 mat-dialog-content style="font-weight: lighter; margin-bottom: 25px;">Order information</h6>
+<!--        artist and date-->
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Select artist</mat-label>
+              <mat-select [(ngModel)]="model.ArtistId" name="artistId" id="artistId" matInput >
+
+                <mat-option *ngFor="let artist of artists" [value]="artist.Id">
+                  {{artist.Name + " " + artist.Surname}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Due to:</mat-label>
+              <input matInput id="dueTo" name="dueTo" [matDatepicker]="picker" [(ngModel)]="model.DueTo">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker  #picker startView="year" [startAt]="startDate" ></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+<!--order type and granite type-->
+        <div class="row">
+          <div class="col-6">
+              <mat-label>Select granite type: </mat-label>
+            <br>
+              <div class="form-check form-check-block">
+                <input class="form-check-input" type="radio"
+                       value="BLACK"
+                       id="black"
+                       name="graniteType"
+                       [(ngModel)]="model.GraniteType"
+                       required
+                       #graniteType="ngModel">
+                <mat-label class="form-check-label" for="black">Black</mat-label>
+              </div>
+              <div class="form-check form-check-block">
+                <input type="radio"
+                       value="WHITE"
+                       id="white"
+                       class="form-check-input"
+                       name="graniteType"
+                       [(ngModel)]="model.GraniteType"
+                       required
+                       #graniteType="ngModel" />
+                <mat-label class="form-check-label" for="white">White</mat-label>
+              </div>
+
+          </div>
+          <div class="col-6">
+            <mat-label>Select order type: </mat-label>
+            <br>
+            <div class="form-check form-check-block ">
+              <input class="form-check-input" type="radio"
+                     value="PORTRAIT"
+                     id="portrait"
+                     name="orderTyoe"
+                     [(ngModel)]="model.OrderType"
+                     required
+                     #graniteType="ngModel">
+              <label class="form-check-label" for="portrait">Portrait</label>
+            </div>
+            <div class="form-check form-check-block">
+              <input type="radio"
+                     value="FIGURE"
+                     id="figure"
+                     class="form-check-input"
+                     name="orderType"
+                     [(ngModel)]="model.OrderType"
+                     required
+                     #graniteType="ngModel" />
+              <mat-label class="form-check-label" for="figure">Figure</mat-label>
+            </div>
+            <div class="form-check form-check-block">
+              <input type="radio"
+                     value="BOTH"
+                     id="both"
+                     class="form-check-input"
+                     name="orderType"
+                     [(ngModel)]="model.OrderType"
+                     required
+                     #graniteType="ngModel" />
+              <mat-label class="form-check-label" for="figure">Both</mat-label>
+            </div>
+
+            <div>
+
+            </div>
+          </div>
+        </div>
+
+<!--        epilogue-->
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Epilogue</mat-label>
+              <textarea matInput
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5"
+                        id="epilogue"
+                        name="epilogue"
+                        [(ngModel)]="model.Epilogue"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field style="width: 100%;">
+              <mat-label>My note</mat-label>
+              <textarea matInput
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5"
+                        id="coworkerNote"
+                        name="coworkerNote"
+                        [(ngModel)]="model.CoworkerNote"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6" id="client-info">
+        <h6 mat-dialog-content style="font-weight: lighter; margin-bottom: 25px;">Client information</h6>
+        <!--name and surname-->
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Name:</mat-label>
+              <input matInput id="name" name="name" [(ngModel)]="model.Client.Name">
+            </mat-form-field>
+          </div>
+
+          <div class="col-6">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Surname:</mat-label>
+              <input matInput id="surname" name="surname" [(ngModel)]="model.Client.Surname">
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <!--dates-->
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Birth date:</mat-label>
+              <input matInput [matDatepicker]="pickerBirth" id="birthDate" name="birthDate" [(ngModel)]="model.Client.BirthDate" >
+              <mat-datepicker-toggle matSuffix [for]="pickerBirth"></mat-datepicker-toggle>
+              <mat-datepicker #pickerBirth></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field>
+              <mat-label>Death date:</mat-label>
+              <input matInput [matDatepicker]="pickerDeath" id="deathDate" name="deathDate" [(ngModel)]="model.Client.DeathDate" >
+              <mat-datepicker-toggle matSuffix [for]="pickerDeath"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDeath></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+
+
+
+    </div>
+
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button type="button" (click)="onNoClick()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit">Submit</button>
+  </mat-dialog-actions>
+
+</form>
+
+<div class="mt-2">
+  <strong>
+    Items marked with (*) are required.
+  </strong>
+</div>

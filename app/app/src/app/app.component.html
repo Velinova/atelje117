@@ -1,0 +1,54 @@
+<div id="app">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">Atelje117</a>
+    <ul class="navbar-nav mr-auto" routerLinkActive="active">
+      <li class="nav-item" *ngIf="!isLoggedIn">
+        <a href="/home" class="nav-link" routerLink="home">Home</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_ARTIST'">
+        <a href="/mycoworkers" class="nav-link" routerLink="mycoworkers">My coworkers</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_ARTIST'">
+        <a href="/porcelaininventory" class="nav-link" routerLink="porcelaininvetory">Porcelain Inventory</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_ARTIST'">
+        <a href="/myorders" class="nav-link" routerLink="myorders">My orders</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_ARTIST'">
+        <a href="/monthlyreports" class="nav-link" routerLink="monthlyreports">Monthly reports</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_COWORKER'">
+        <a href="/myartists" class="nav-link" routerLink="myartists">My artists</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_COWORKER'">
+        <a href="/graniteOrders" class="nav-link" routerLink="graniteOrders">Granite orders</a>
+      </li>
+      <li class="nav-item" *ngIf="userRole == 'ROLE_COWORKER'">
+        <a href="/porcelainOrders" class="nav-link" routerLink="porcelainOrders">Porcelain orders</a>
+      </li>
+
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+      <li class="nav-item">
+        <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a href="/login" class="nav-link" routerLink="login">Login</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+      <li class="nav-item">
+        <a href="/profile" class="nav-link" routerLink="profile">{{ user.Name + ' ' + user.Surname }}</a>
+      </li>
+      <li class="nav-item">
+        <a href class="nav-link" (click)="logout()">LogOut</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
